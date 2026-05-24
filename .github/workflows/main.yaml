@@ -1,0 +1,23 @@
+on: [workflow_dispatch,push]
+name: CI Workflow
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+    unit-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name : setup Node
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18'
+
+            - name: Install Dependencies
+              run: npm install
+
+            - name: Run Unit Tests
+              run: npm test
+
