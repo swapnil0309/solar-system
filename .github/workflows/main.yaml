@@ -79,6 +79,31 @@ jobs:
                   name: code-coverage-report
                   path: coverage
                   retention-days: 5
+    
+    docker:
+        name: containerizaton
+        runs-on: ubuntu-latest
+        needs: [unit-test, code-coverage]
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Login to DockerHub
+              uses: docker/login-action@v4
+              with:
+                  username: ${{ var.DOCKER_USERNAME }}
+                  password: ${{ secrets.DOCKER_PASSWORD }}
+
+            - name: Build and Push Docker Image
+              uses: docker/build-push-action@v4
+              with:
+                  context: .   #going to search for Dockerfile in the root directory
+                  push: true
+                  tags: ${{ var.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
+
+
+
+            
               
 
 
