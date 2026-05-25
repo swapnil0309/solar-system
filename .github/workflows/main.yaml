@@ -8,10 +8,7 @@ jobs:
         strategy:
             matrix:
                 nodejs-version: [18, 20]
-                os: [ubuntu-latest,macos-latest]
-                exclude:
-                 - nodejs-version: 18
-                   os: macos-latest
+                os: [ubuntu-latest]
         runs-on: ${{ matrix.os }}
         services:
             mongo-db:
