@@ -3,7 +3,6 @@ name: CI Workflow
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
     unit-test:
         runs-on: ubuntu-latest
@@ -29,10 +28,11 @@ jobs:
               run: npm install
 
             - name: Run Unit Tests
+              id: unit_test
               run: npm test
 
             - name: Archive test results
-              if: always()
+              if: steps.unit_test.outcome == 'failure' || steps.unit_test.outcome == 'success'
               uses: actions/upload-artifact@v5
               with:
                   name: test-results
