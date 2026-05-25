@@ -91,7 +91,7 @@ jobs:
             - name: Login to DockerHub
               uses: docker/login-action@v4
               with:
-                  username: ${{ var.DOCKER_USERNAME }}
+                  username: ${{ vars.DOCKER_USERNAME }}
                   password: ${{ secrets.DOCKER_PASSWORD }}
 
             - name: Build and Push Docker Image
@@ -99,7 +99,7 @@ jobs:
               with:
                   context: .   #going to search for Dockerfile in the root directory
                   push: true
-                  tags: ${{ var.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
+                  tags: ${{ vars.DOCKER_USERNAME }}/solar-system:${{ github.sha }}
 
 
 
