@@ -84,6 +84,8 @@ jobs:
         name: containerizaton
         runs-on: ubuntu-latest
         needs: [unit-test, code-coverage]
+        permissions:
+            packages: write
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
