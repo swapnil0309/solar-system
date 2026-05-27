@@ -137,7 +137,7 @@ jobs:
                 version: 'v1.28.15' # default is latest stable
               id: install
 
-            - name: Setup Kubeconfig
+            - name: Setup Kubeconfig context
               uses: azure/k8s-set-context@v5
               with:
                  method: kubeconfig
