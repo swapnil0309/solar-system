@@ -7,7 +7,7 @@ jobs:
     unit-test:
         strategy:
             matrix:
-                nodejs-version: [18, 20]
+                nodejs-version: [ 20]
                 os: [ubuntu-latest]
         runs-on: ${{ matrix.os }}
         services:
@@ -146,7 +146,7 @@ jobs:
             - name: save public ip for ingress
               id: get_ip
               run: |
-                 echo = "INGRESS_IP=$(curl ifconfig.me)" >> $GITHUB_ENV
+                 echo = "INGRESS_IP=$(curl ifconfig.me)" >> "$GITHUB_ENV"
 #                IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 
