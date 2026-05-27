@@ -145,7 +145,7 @@ jobs:
 
             - name: Fetch cluster details
               run: |
-                kubectl version -- short
+                kubectl version --output=json
                 kubectl cluster-info
 
                
