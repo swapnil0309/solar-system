@@ -143,10 +143,10 @@ jobs:
                  method: kubeconfig
                  kubeconfig: ${{ secrets.KUBECONFIG }} 
 
-            - name: save public ip for ingress
-              id: get_ip
-              run: |
-                 echo = "INGRESS_IP=$(curl ifconfig.me)" >> "$GITHUB_ENV"
+ #           - name: save public ip for ingress
+ #             id: get_ip
+ #             run: |
+ #                echo = "INGRESS_IP=$(curl ifconfig.me)" >> "$GITHUB_ENV"
 #                IP=$(kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
 
@@ -160,7 +160,7 @@ jobs:
                  NAMESPACE: ${{ vars.NAMESPACE }}
                  REPLICAS: ${{ vars.REPLICAS }}
                  K8S_IMAGE: ${{ vars.DOCKER_USERNAME }}/solar-system:${{ github.sha }}   
-                 INGRESS_IP: ${{ env.INGRESS_IP }}         
+                 INGRESS_IP: '13.71.2.57'        
                 
             - name: check files
               run: |
