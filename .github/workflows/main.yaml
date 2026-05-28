@@ -16,7 +16,7 @@ jobs:
                 ports:
                     - 27017:27017
         env:
-            MONGO_URI: mongodb://localhost:27017/superData
+            MONGO_URI: ${{ vars.MONGO_URI }}
             MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
             MONGO_PASSWORD: ${{ secrets.MONGO_PASS }}
         steps:
@@ -58,7 +58,7 @@ jobs:
                 options:
                   --name mongo
         env:
-            MONGO_URI: mongodb://mongo:27017/superData
+            MONGO_URI: ${{ vars.MONGO_URI }}
             MONGO_USERNAME: ${{ vars.MONGO_USERNAME }}
             MONGO_PASSWORD: ${{ secrets.MONGO_PASS }}
         steps:
@@ -155,16 +155,25 @@ jobs:
               with:
                   tokenPrefix: '${'
                   tokenSuffix: '}'
-                  files: '["kubernetes/development/deployment.yaml"]'
+                  files: '["kubernetes/development/*.yaml"]'
               env:
                  NAMESPACE: ${{ vars.NAMESPACE }}
                  REPLICAS: ${{ vars.REPLICAS }}
                  K8S_IMAGE: ${{ vars.DOCKER_USERNAME }}/solar-system:${{ github.sha }}   
-                 INGRESS_IP: '13.71.2.57'        
-                
-            - name: check files
+                 INGRESS_IP: '13.71.2.57'  
+
+            - name: create mongo secret
               run: |
-                 cat kubernetes/development/deployment.yaml
+                 kubectl create secret generic mongo-db-creds -n ${{ vars.NAMESPACE }} \
+                 --from-literal=username=${{ vars.MONGO_USERNAME }} \
+                 --from-literal=password=${{ secrets.MONGO_PASS }} \
+                 --from-literal=uri=${{ vars.MONGO_URI }} \
+                 --dry-run=client -o yaml | kubectl apply -f -
+                 
+            - name : Deploy to Dev
+              run: |
+                 kubectl apply -f kubernetes/development/ -n ${NAMESPACE}
+                
 
 
             
