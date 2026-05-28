@@ -172,7 +172,7 @@ jobs:
                  
             - name : Deploy to Devvelopmet
               run: |
-                 kubectl apply -f kubernetes/development/ -n ${NAMESPACE}
+                 kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
                 
 
 
