@@ -153,8 +153,8 @@ jobs:
             - name : Replace tokens
               uses: cschleiden/replace-tokens@v1
               with:
-                  tokenPrefix: '_{_'
-                  tokenSuffix: '_}_'
+                  tokenPrefix: '{'
+                  tokenSuffix: '}'
                   files: '["kubernetes/development/deployment.yaml"]'
               env:
                  NAMESPACE: ${{ vars.NAMESPACE }}
