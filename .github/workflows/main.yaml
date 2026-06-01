@@ -170,9 +170,11 @@ jobs:
                  --from-literal=uri=${{ vars.MONGO_URI }} \
                  --dry-run=client -o yaml | kubectl apply -f -
                  
-            - name : Deploy to Devvelopmet
+            - name : Deploy to Developmet
               run: |
                  kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
+
+            
                 
 
 
