@@ -194,7 +194,7 @@ jobs:
                        echo $url
                        echo "Running integration tests against dev environment"
                        echo "----------------------------------------------"
-                       curl https://$url/live -s -k | jq -r .status | grep -i live 
+                       curl https://$url:31526/live -s -k | jq -r .status | grep -i live 
 
               
 
