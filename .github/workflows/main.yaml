@@ -125,7 +125,7 @@ jobs:
 
     dev-deploy:
         needs: docker
-        uses: ./.github/workflows/reusable-workflow.yaml
+        uses: .github/workflows/reusable-workflow.yaml
 
         
     dev-integration-testing:
@@ -146,7 +146,7 @@ jobs:
     prod-deploy:
         name: Deploy to Prod Environment
         needs: dev-integration-testing
-        uses: ./.github/workflows/reusable-workflow.yaml
+        uses: .github/workflows/reusable-workflow.yaml
         
 
     prod-integration-testing:
