@@ -71,7 +71,7 @@ jobs:
                  kubectl -n ${{ vars.NAMESPACE }} create secret generic mongo-db-creds  \
                  --from-literal=username=${{ vars.MONGO_USERNAME }} \
                  --from-literal=password=${{ secrets.mongodb-password }} \
-                 --from-literal=uri= "${{ inputs.mongodb-uri }}"" \
+                 --from-literal=uri= "${{ inputs.mongodb-uri }}" \
                  --dry-run=client -o yaml | kubectl apply -f -
                  
             - name : Deploy to Kubernetes Cluster
