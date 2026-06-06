@@ -22,9 +22,12 @@ on:
         required: false
         type: string
         default: 'v1.28.15'
+    outputs:
+      application-url:
+         value: ${{ jobs.reuse-deploy.outputs.APP_INGRESS_URL}}
 
 jobs:
-    reuse-deply:
+    reuse-deploy:
         runs-on: ubuntu-latest
         environment: 
           name: ${{ inputs.environment }}
@@ -82,6 +85,5 @@ jobs:
             - name: set app Ingress host URL
               id: set-ingress-host-url
               run: |
-                 url=
-                 echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ing -o jsonpath="{.items[0].spec.tls[0].hosts[0]}")" >> "$GITHUB_OUTPUT"
+                 url=echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ing -o jsonpath="{.items[0].spec.tls[0].hosts[0]}")" >> "$GITHUB_OUTPUT"
    

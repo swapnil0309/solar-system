@@ -142,7 +142,7 @@ jobs:
               steps:
                 - name: Test API Endpoint
                   env:
-                    url: ${{ needs.dev-deploy.outputs.APP_INGRESS_URL }}
+                    url: ${{ needs.dev-deploy.outputs.application-url }}
                   run: |
                        echo $url
                        echo "Running integration tests against dev environment"
@@ -169,7 +169,7 @@ jobs:
               steps:
                 - name: Test API Endpoint
                   env:
-                    url: ${{ needs.prod-deploy.outputs.APP_INGRESS_URL }}
+                    url: ${{ needs.prod-deploy.outputs.application-url }}
                   run: |
                        echo $url
                        echo "Running integration tests against production environment"
