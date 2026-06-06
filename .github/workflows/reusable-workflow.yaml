@@ -6,12 +6,28 @@ on:
         required: true
       mongodb-password:
         required: true
+    inputs:
+      mongodb-uri:
+        required: true
+        type: string
+      k8s-manifest-path:
+        required: true
+        type: string
+        default: 'kubernetes/'
+      environment:
+        required: true
+        type: string
+        default: 'development'
+      kubectl-version:
+        required: false
+        type: string
+        default: 'v1.28.15'
 
 jobs:
     reuse-deply:
         runs-on: ubuntu-latest
         environment: 
-          name: development
+          name: ${{ inputs.environment }}
           url: http://${{ steps.set-ingress-host-url.outputs.APP_INGRESS_HOST }}:31526
         outputs:
             APP_INGRESS_URL: ${{ steps.set-ingress-host-url.outputs.APP_INGRESS_HOST }}
@@ -22,7 +38,7 @@ jobs:
             - name: Install Kubectl
               uses: azure/setup-kubectl@v4
               with:
-                version: 'v1.28.15' # default is latest stable
+                version: ${{ inputs.kubectl-version }} # default is latest stable
               id: install
 
             - name: Setup Kubeconfig context
@@ -43,7 +59,7 @@ jobs:
               with:
                   tokenPrefix: '${'
                   tokenSuffix: '}'
-                  files: '["kubernetes/development/*.yaml"]'
+                  files: '["${{ inputs.k8s-manifest-path }}*.yaml"]'
               env:
                  NAMESPACE: ${{ vars.NAMESPACE }}
                  REPLICAS: ${{ vars.REPLICAS }}
@@ -55,12 +71,12 @@ jobs:
                  kubectl -n ${{ vars.NAMESPACE }} create secret generic mongo-db-creds  \
                  --from-literal=username=${{ vars.MONGO_USERNAME }} \
                  --from-literal=password=${{ secrets.mongodb-password }} \
-                 --from-literal=uri='mongodb://mongodb:27017/mydb' \
+                 --from-literal=uri= ${{ inputs.mongodb-uri }} \
                  --dry-run=client -o yaml | kubectl apply -f -
                  
-            - name : Deploy to Developmet
+            - name : Deploy to Kubernetes Cluster
               run: |
-                 kubectl apply -f kubernetes/development/ -n ${{ vars.NAMESPACE }}
+                 kubectl apply -f ${{ inputs.k8s-manifest-path }} -n ${{ vars.NAMESPACE }}
 
             - name: set app Ingress host URL
               id: set-ingress-host-url
