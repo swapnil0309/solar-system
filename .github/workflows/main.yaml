@@ -150,6 +150,9 @@ jobs:
         name: Deploy to Prod Environment
         needs: dev-integration-testing
         uses: ./.github/workflows/reusable-workflow.yaml
+        secrets:
+            k8s-kubeconfig: ${{ secrets.KUBECONFIG }}
+            mongodb-password: ${{ secrets.MONGO_PASS}}
 
     prod-integration-testing:
               name: Prod Integation Testingg
