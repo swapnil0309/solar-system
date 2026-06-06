@@ -1,6 +1,11 @@
 name: Reusable Deployment Workflow
 on: 
   workflow_call:
+    secrets:
+      k8s-kubeconfig:
+        required: true
+      mongodb-password:
+        required: true
 
 jobs:
     reuse-deply:
@@ -24,7 +29,7 @@ jobs:
               uses: azure/k8s-set-context@v5
               with:
                  method: kubeconfig
-                 kubeconfig: ${{ secrets.KUBECONFIG }} 
+                 kubeconfig: ${{ secrets.k8s-kubeconfig }} 
 
  #           - name: save public ip for ingress
  #             id: get_ip
@@ -49,7 +54,7 @@ jobs:
               run: |
                  kubectl -n ${{ vars.NAMESPACE }} create secret generic mongo-db-creds  \
                  --from-literal=username=${{ vars.MONGO_USERNAME }} \
-                 --from-literal=password=${{ secrets.MONGO_PASS }} \
+                 --from-literal=password=${{ secrets.mongodb-password }} \
                  --from-literal=uri='mongodb://mongodb:27017/mydb' \
                  --dry-run=client -o yaml | kubectl apply -f -
                  

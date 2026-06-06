@@ -126,6 +126,9 @@ jobs:
     dev-deploy:
         needs: docker
         uses: ./.github/workflows/reusable-workflow.yaml
+        secrets:
+            k8s-kubeconfig: ${{ secrets.KUBECONFIG }}
+            mongodb-password: ${{ secrets.MONGO_PASS}}
 
         
     dev-integration-testing:
