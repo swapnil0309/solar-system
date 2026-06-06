@@ -84,6 +84,6 @@ jobs:
 
             - name: set app Ingress host URL
               id: set-ingress-host-url
-              run: |
-                 url=echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ing -o jsonpath="{.items[0].spec.tls[0].hosts[0]}")" >> "$GITHUB_OUTPUT"
+              run: |              
+                   echo "APP_INGRESS_HOST=$(kubectl -n ${{ vars.NAMESPACE }} get ing -o jsonpath="{.items[0].spec.tls[0].hosts[0]}")" >> "$GITHUB_OUTPUT"
    
