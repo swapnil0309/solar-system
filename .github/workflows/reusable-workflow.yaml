@@ -72,6 +72,7 @@ jobs:
                  --from-literal=username=${{ vars.MONGO_USERNAME }} \
                  --from-literal=password=${{ secrets.mongodb-password }} \
                  --from-literal=uri= "${{ inputs.mongodb-uri }}" \
+                 --save-config \
                  --dry-run=client -o yaml | kubectl apply -f -
                  
             - name : Deploy to Kubernetes Cluster
