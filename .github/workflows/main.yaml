@@ -129,7 +129,7 @@ jobs:
 
         
     dev-integration-testing:
-              name: Dev Integation Testingg
+              name: Dev Integation Testing
               needs: dev-deploy
               runs-on: ubuntu-latest
               steps:
