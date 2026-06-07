@@ -113,12 +113,24 @@ jobs:
                mv test-results.xml reports-${{ github.sha }}/
                mv cobertura-coverage.xml reports-${{ github.sha }}/
                ls -ltr reports-${{ github.sha }}
+
+            - name: Login to Azure
+              uses: azure/login@v2
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Upload Reports to Azure Files
+              uses: rnakamine/azure-files-upload@v1.0.0
+              with:
+                  connection_string: ${{ vars.CONNECTION_STRING }}
+                  source: reports-${{ github.sha }}/*
+                  destination: reports
               
     
     docker:
         name: containerizaton
         runs-on: ubuntu-latest
-        needs: [unit-test, code-coverage]
+        needs: reports
         permissions:
             packages: write
         steps:
