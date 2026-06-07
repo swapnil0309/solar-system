@@ -120,12 +120,13 @@ jobs:
                   creds: ${{ secrets.AZURE_CREDENTIALS }}
 
             - name: Upload Reports to Azure Files
-              uses: rnakamine/azure-files-upload@v1.0.0
+              uses: azure/cli@v2
               with:
-                  connection_string: ${{ vars.CONNECTION_STRING }}
-                  source: reports-${{ github.sha }}/*
-                  destination: reports
-              
+                  azcliversion: latest
+                  inlineScript: |
+                    az storage file upload --share-name ${{ vars.AZURE_FILE_SHARE_NAME }} \
+                    --source reports-${{ github.sha }}/test-results.xml \
+                    --account-name ${{ vars.AZURE_STORAGE_ACCOUNT }} \
     
     docker:
         name: containerizaton
