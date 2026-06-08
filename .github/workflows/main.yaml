@@ -91,7 +91,7 @@ jobs:
                   path: coverage
                   retention-days: 5
 
-    reports:
+    publishing-reports:
         name: Gather Reports
         runs-on: ubuntu-latest
         needs: [unit-test, code-coverage]
@@ -131,7 +131,7 @@ jobs:
     docker:
         name: containerizaton
         runs-on: ubuntu-latest
-        needs: reports
+        needs: [unit-test, code-coverage]
         permissions:
             packages: write
         steps:
@@ -212,7 +212,25 @@ jobs:
                        echo "Running integration tests against production environment"
                        echo "----------------------------------------------"
                        curl http://$url:31526/live -s -k | jq -r .status | grep -i live 
-
+    
+    slack-notify:  
+              if: always() # Ensure this runs even if previous jobs fail
+              continue-on-error: true # Don't fail the workflow if this step fails     
+              needs: [ dev-integration-testing, prod-integration-testing ] # Run after both integration testing jobs   
+              runs-on: ubuntu-latest
+              name: Slack Notification
+              steps:
+                 - uses: actions/checkout@v4
+                 - name: Send Slack Notification
+                   uses: rtCamp/action-slack-notify@v2
+                   env:
+                    SLACK_CHANNEL: github-action
+                    SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+                    SLACK_ICON: https://github.com/rtCamp.png?size=48
+                    SLACK_MESSAGE: ':hammer_and_wrench: Triggered by ${{ github.actor }} for ${{ github.workflow }} on branch ${{ github.ref }}. Status: ${{ job.status }}'
+                    SLACK_TITLE: Information
+                    SLACK_USERNAME: rtCamp
+                    SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
             
                 
 
