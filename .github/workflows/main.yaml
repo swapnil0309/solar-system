@@ -189,7 +189,7 @@ jobs:
               
     prod-deploy:
         name: Deploy to Prod Environment
-        needs: dev-integration-testing
+        needs: docker
         uses: ./.github/workflows/reusable-workflow.yaml
         secrets:
             k8s-kubeconfig: ${{ secrets.KUBECONFIG }}
@@ -216,7 +216,7 @@ jobs:
     slack-notify:  
               if: always() # Ensure this runs even if previous jobs fail
               continue-on-error: true # Don't fail the workflow if this step fails     
-              needs: [ dev-integration-testing, prod-integration-testing ] # Run after both integration testing jobs   
+              needs: [dev-integration-testing,prod-integration-testing] # Run after both integration testing jobs   
               runs-on: ubuntu-latest
               name: Slack Notification
               steps:
