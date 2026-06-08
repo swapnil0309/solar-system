@@ -76,7 +76,7 @@ jobs:
             #       node-version: '18'
 
             - name: Using Composite action to cache dependencies and install packages
-              uses: ./.custom-action/npm-action
+              uses: ./.github/custom-action/npm-action
               with:
                   path-to-folder: node_modules
 
