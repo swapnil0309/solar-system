@@ -28,14 +28,19 @@ jobs:
               with:
                   node-version: ${{ matrix.nodejs-version }}
 
-            - name: cache node dependencies
-              uses: actions/cache@v3
+            - name: Using Composite action to cache dependencies and install packages
+              uses: ./.github/custom-action/npm-action
               with:
-                  path: node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+                  path-to-folder: node_modules
 
-            - name: Install Dependencies
-              run: npm install
+            # - name: cache node dependencies
+            #   uses: actions/cache@v3
+            #   with:
+            #       path: node_modules
+            #       key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+
+            # - name: Install Dependencies
+            #   run: npm install
 
             - name: Run Unit Tests
               id: unit_test
@@ -70,14 +75,10 @@ jobs:
             #   with:
             #       node-version: '18'
 
-            - name: cache node dependencies
-              uses: actions/cache@v3
+            - name: Using Composite action to cache dependencies and install packages
+              uses: ./.github/custom-action/npm-action
               with:
-                  path: node_modules
-                  key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-
-            - name: Install Dependencies
-              run: npm install
+                  path-to-folder: node_modules
 
             - name: Run Code Coverage
               run: npm run coverage
